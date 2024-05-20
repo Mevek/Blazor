@@ -1,0 +1,57 @@
+﻿@page "/nowa"
+@using System.ComponentModel.DataAnnotations
+
+<EditForm Model="@user" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <table>
+        <tr>
+            <td><label for="username">Username:</label></td>
+            <td><InputText id="username" @bind-Value="user.Username" /></td>
+            <td><ValidationMessage For="@(() => user.Username)" /></td>
+        </tr>
+        <tr>
+            <td><label for="password">Password:</label></td>
+            <td><InputText id="password" type="password" @bind-Value="user.Password" /></td>
+            <td><ValidationMessage For="@(() => user.Password)" /></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button type="submit">Login</button>
+            </td>
+        </tr>
+    </table>
+</EditForm>
+
+@if (loginResult != null)
+{
+    <p>@loginResult</p>
+}
+
+@code {
+    private UserModel user = new UserModel();
+    private string loginResult;
+
+    private void HandleValidSubmit()
+    {
+        // Prosta logika logowania dla celów demonstracyjnych
+        if (user.Username == "admin" && user.Password == "password")
+        {
+            loginResult = "Login successful!";
+        }
+        else
+        {
+            loginResult = "Invalid username or password.";
+        }
+    }
+
+    public class UserModel
+    {
+        [Required]
+        public string Username { get; set; }
+
+        [Required]
+        public string Password { get; set; }
+    }
+}
